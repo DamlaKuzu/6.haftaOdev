@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hava Durumu Kartı</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      .weather-card {
+        background: linear-gradient(135deg, #ab00ab, #140022);
+        padding: 40px;
+        border-radius: 15px;
+        width: 400px;
+        text-align: left;
+        box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        position: relative;
+      }
+      .location {
+        display: flex;
+        align-items: center;
+        font-size:1.4rem;
+        font-family:sans-serif;
+      }
+      .location img {
+        width: 16px;
+        margin-left: 5px;
+      }
+      .date {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-top: 30px;
+      }
+      .temp-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px 0;
+      }
+      .temp {
+        font-size: 2.5rem;
+        font-weight:lighter;
+        margin-left: 10px;
+      }
+      .icon {
+        width: 50px;
+        margin-left: 10px;
+      }
+      .details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;;
+        opacity: 0.8;
+        margin-top: 10px;
+      }
+      .details p {
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="weather-card">
+      <div class="location">
+        <span id="city">Burdwan</span>
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/marker.png" alt="location" />
+      </div>
+      <div class="date" id="date">Aug 23, Tue</div>
+      <div class="temp-container">
+        <span class="temp" id="temperature">27°C</span>
+        <img id="icon" class="icon" src="https://openweathermap.org/img/wn/03d@2x.png" alt="Weather Icon" />
+      </div>
+      <div class="details">
+        <p>HUMIDITY <span id="humidity">99%</span></p>
+        <p>VISIBILITY <span id="visibility">8km</span></p>
+        <p>AIR PRESSURE <span id="pressure">1005hPa</span></p>
+        <p>WIND <span id="wind">2mph</span></p>
+      </div>
+    </div>
+
+    <script>
+      async function getWeather() {
+        const API_URL =
+          "https://api.openweathermap.org/data/2.5/weather?q=$istanbul&appid=$bd5e378503939ddaee76f12ad7a97608}&units=metric";
+        
+        try {
+          const res = await fetch(API_URL);
+          const weather = await res.json();
+          
+          document.getElementById("temperature").textContent = `${weather.main.temp}°C`;
+          document.getElementById("humidity").textContent = `${weather.main.humidity}%`;
+          document.getElementById("visibility").textContent = `${weather.visibility / 1000}km`;
+          document.getElementById("pressure").textContent = `${weather.main.pressure}hPa`;
+          document.getElementById("wind").textContent = `${weather.wind.speed}mph`;
+          document.getElementById("icon").src = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+        } catch (error) {
+          console.error("Hava durumu verisi alınamadı", error);
+        }
+      }
+
+      getWeather();
+    </script>
+  </body>
+</html>
